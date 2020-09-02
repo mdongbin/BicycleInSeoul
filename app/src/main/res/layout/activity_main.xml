@@ -7,12 +7,48 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/txtTitle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="따릉이 추적기"
+        android:textSize="70sp"
+        android:textAlignment="center"
+        android:layout_margin="30dp"
+
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <Button
+        android:id="@+id/btnTracing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="따릉이 추적하기"
+        android:textSize="50dp"
+        android:layout_margin="50dp"
+        android:padding="50dp"
+
+        app:layout_constraintBottom_toTopOf="@id/btnStatus"/>
+
+    <Button
+        android:id="@+id/btnStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="따릉이 현황"
+        android:textSize="50dp"
+        android:layout_margin="50dp"
+        android:padding="50dp"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <Button
+        android:id="@+id/btnObtion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="따릉이 옵션"
+        android:textSize="50dp"
+        android:layout_margin="50dp"
+        android:padding="50dp"
+
+        app:layout_constraintTop_toBottomOf="@id/btnStatus"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
