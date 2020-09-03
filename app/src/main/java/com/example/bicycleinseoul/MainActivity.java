@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -35,8 +36,9 @@ public class MainActivity extends AppCompatActivity {
     private HashMap<Integer, ArrayList<String>> parsingValue1 = new HashMap<>();
     private HashMap<Integer, ArrayList<String>> parsingValue2 = new HashMap<>();
 
-    private ViewPager viewPager;
+    private SwipeViewPager viewPager;
     private TabLayout tabLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
         initReferences();
         startParsing();
+
     }
 
     private void initReferences() {
@@ -60,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager(), 4);
         viewPager.setAdapter(pagerAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        viewPager.setPagingEnabled(false);
+
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -232,22 +237,13 @@ public class MainActivity extends AppCompatActivity {
             }
 
             reader.close();
-            sendData();
+
+            DataManager.mergingValue(parsingValue1, parsingValue2);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(TAG, e.getMessage());
         }
     };
-
-    //fragment로 보낸다.
-    private void sendData() {
-        Bundle bundle1 = new Bundle();
-        bundle1.putSerializable("bundle1", parsingValue1);
-        MapFragment a = MapFragment.getMapFragment();
-        a.setArguments(bundle1);
-
-        a.getAPIdata();
-    }
 
     private void getAppKeyHash() {
         try {

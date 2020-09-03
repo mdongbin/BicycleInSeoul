@@ -10,15 +10,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import net.daum.android.map.coord.MapCoordLatLng;
+import net.daum.mf.map.api.MapPOIItem;
+import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MapFragment extends Fragment {
-    private MapView mapView;
+    private static MapView mapView;
 
-    private static MapFragment mMapFragment;
+    private static MapFragment mMapFragment = null;
 
     public static MapFragment initMapFragment(){
         mMapFragment = new MapFragment();
@@ -30,8 +33,6 @@ public class MapFragment extends Fragment {
         return mMapFragment;
     }
 
-    HashMap<Integer, ArrayList<String>> result = new HashMap<>();
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -42,15 +43,27 @@ public class MapFragment extends Fragment {
         mapViewContainer.addView(mapView);
 
 
-
         return view;
     }
 
-    public void getAPIdata(){
-        Bundle bundle = getArguments();
-        if(bundle != null){
-            result = (HashMap<Integer, ArrayList<String>>)bundle.getSerializable("bundle1");
-            Log.e("######", result.get(0).get(0));
+    public static void setMarker() {
+        ArrayList<String[]> arrayList = new ArrayList<>();
+        arrayList = DataManager.getLocation();
+
+        for(int i=0; i<arrayList.size(); i++){
+            MapPOIItem marker = new MapPOIItem();
+            MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(Double.parseDouble(arrayList.get(i)[0]), Double.parseDouble(arrayList.get(i)[1]));
+
+            marker.setItemName("marker!");
+            marker.setTag(i);
+            marker.setMapPoint(mapPoint);
+            marker.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
+            marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+
+            mapView.addPOIItem(marker);
         }
+
+
     }
+
 }
