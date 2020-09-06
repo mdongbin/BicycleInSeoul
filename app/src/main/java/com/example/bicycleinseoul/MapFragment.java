@@ -1,10 +1,12 @@
 package com.example.bicycleinseoul;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,8 +20,10 @@ import net.daum.mf.map.api.MapView;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MapFragment extends Fragment {
-    private static MapView mapView;
+public class MapFragment extends Fragment implements MapView.MapViewEventListener {
+    private static String TAG = "MapFragment";
+
+    private MapView mapView;
 
     private static MapFragment mMapFragment = null;
 
@@ -33,20 +37,33 @@ public class MapFragment extends Fragment {
         return mMapFragment;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Log.e(TAG, "onCrete");
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
-        mapView = new MapView(getContext());
+        mapView = new MapView(mMapFragment.getContext());
+
         ViewGroup mapViewContainer = (ViewGroup) view.findViewById(R.id.map_view);
         mapViewContainer.addView(mapView);
+        mapView.setZoomLevel(3, true);
 
+        mapView.setMapViewEventListener(this);
 
+        setMarker();
+        Log.e(TAG, "onCreteView");
         return view;
     }
 
-    public static void setMarker() {
+    public void setMarker() {
         ArrayList<String[]> arrayList = new ArrayList<>();
         arrayList = DataManager.getLocation();
 
@@ -66,4 +83,51 @@ public class MapFragment extends Fragment {
 
     }
 
+    @Override
+    public void onMapViewInitialized(MapView mapView) {
+
+    }
+
+    @Override
+    public void onMapViewCenterPointMoved(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewZoomLevelChanged(MapView mapView, int i) {
+        if(i > 4){
+            mapView.setZoomLevel(4, true);
+            Toast.makeText(getContext(), "더이상 축소할 수 없습니다.",  Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onMapViewSingleTapped(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewDoubleTapped(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewLongPressed(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewDragStarted(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewDragEnded(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
+
+    }
 }
